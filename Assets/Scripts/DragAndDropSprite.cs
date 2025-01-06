@@ -7,7 +7,7 @@ public class DragAndDropSprite : MonoBehaviour
     private bool isOverPan = false; // Kiểm tra nếu Square đang trên Pan
     private bool hasBeenDroppedInPan = false; // Tránh việc nấu lại nếu đã thả vào Pan
     private bool isOverDisk = false; // Kiểm tra Square có vào Disk chưa
-    public bool isCooked = false; // Đổi thành public
+    public bool isCooked = false, overCooked = false; // Đổi thành public
     private bool isInDisk = false; // Kiểm tra Square đã vào Disk chưa
     private bool isGivenToCustomer = false; // Kiểm tra Square đã vào miệng khách hàng chưa
     public static bool isPutCircle = false, useRawCookBooster;
@@ -45,7 +45,7 @@ public class DragAndDropSprite : MonoBehaviour
             }
         }
 
-        if (useRawCookBooster)
+        if (useRawCookBooster && !isCooked && !overCooked)
         {
             useRawCookBooster = false;
             CookSquare();
@@ -143,6 +143,18 @@ public class DragAndDropSprite : MonoBehaviour
             Debug.Log("Square is cooked!");
             GetComponent<SpriteRenderer>().color = Color.yellow; // Thay đổi màu sắc của Square khi nấu
             isCooked = true; // Đánh dấu Square đã được nấu chín
+            Invoke("OverCook", 3f);
+        }
+    }
+
+    private void OverCook()
+    {
+        if (isCooked && !isInDisk)
+        {
+            // Sau khi thả vào Pan 3 giây, Square sẽ bị "nấu" (thay đổi màu hoặc hiệu ứng)
+            Debug.Log("Square is over cooked!");
+            GetComponent<SpriteRenderer>().color = Color.red; // Thay đổi màu sắc của Square khi nấu
+            overCooked = true; // Đánh dấu Square đã được nấu chín
         }
     }
 
@@ -154,11 +166,15 @@ public class DragAndDropSprite : MonoBehaviour
         }
         else if (other.CompareTag("Disk"))
         {
-            if (isCooked)
+            if (isCooked && !overCooked)
             {
                 isOverDisk = true; // Đánh dấu Square đã vào Disk
                 isInDisk = true; // Đánh dấu Square đã vào Disk
                 Debug.Log("Square is in disk.");
+            }
+            else if (isCooked && overCooked)
+            {
+                Debug.Log("Cannot drop over cooked into disk.");
             }
             else
             {
