@@ -174,8 +174,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4939cf082e952a140ada65472a865f4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeWait: 5
-  customerPrefab: {fileID: 58696118309844338}
+  timeWait: 6
+  ogWaitTime: 0
   fillBar: {fileID: 3626952226082922896}
   value: 1
   wantedShow:

@@ -11,7 +11,7 @@ public class DragAndDropSprite : MonoBehaviour
     private bool isInDisk = false; // Kiểm tra Square đã vào Disk chưa
     private bool isGivenToCustomer = false; // Kiểm tra Square đã vào miệng khách hàng chưa
     public static bool isPutCircle = false;
-    public static int circleIndex;
+    public static int circleIndex, foodIndex;
 
     public GameObject squarePrefab; // Tham chiếu đến prefab của Square
     public GameObject[] squareChild; // Tham chiếu đến đối tượng con của Square khi đã nấu chín
@@ -33,9 +33,15 @@ public class DragAndDropSprite : MonoBehaviour
             for (int i = 0; i < squareChild.Length; i++)
             {
                 if (i == circleIndex)
+                {
+                    foodIndex = i;
                     squareChild[i].SetActive(true);
+                    break;
+                }
                 else
+                {
                     squareChild[i].SetActive(false);
+                }
             }
         }
     }
@@ -156,7 +162,10 @@ public class DragAndDropSprite : MonoBehaviour
         else if (other.CompareTag("CustomerMouth"))
         {
             // Khi Square vào miệng khách hàng
-            isGivenToCustomer = true;
+            if (foodIndex == Customer.wantedIndex)
+            {
+                isGivenToCustomer = true;
+            }
             Debug.Log("Square given to customer.");
         }
     }

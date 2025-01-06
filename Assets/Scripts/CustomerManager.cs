@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class CustomerManager : MonoBehaviour
 {
+    public static bool moreTimeManager;
+
     public float timeWait, ogWaitTime;
     public GameObject customerPrefab;
 
@@ -18,6 +20,11 @@ public class CustomerManager : MonoBehaviour
         if (timeWait > 0)
         {
             timeWait -= Time.deltaTime;
+            if (moreTimeManager)
+            {
+                moreTimeManager = false;
+                timeWait = ogWaitTime;
+            }
         }
         else
         {

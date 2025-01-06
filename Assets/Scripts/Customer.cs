@@ -5,16 +5,19 @@ using UnityEngine;
 
 public class Customer : MonoBehaviour
 {
-    public float timeWait;
+    public float timeWait, ogWaitTime;
     public SpriteRenderer fillBar; // Thanh Fill Bar
     [Range(0, 1)] public float value = 0.5f; // Giá trị từ 0 đến 1
 
     public static int wantedIndex, eatSuccess;
+    public static bool moreTimeCustomer;
     public GameObject[] wantedShow;
 
     // Start is called before the first frame update
     void Start()
     {
+        ogWaitTime = timeWait;
+
         wantedIndex = Random.Range(0, 2);
 
         for (int i = 0; i < wantedShow.Length; i++)
@@ -32,7 +35,12 @@ public class Customer : MonoBehaviour
         if (timeWait > 0)
         {
             timeWait -= Time.deltaTime;
-            SetValue(timeWait / 5);
+            SetValue(timeWait / ogWaitTime);
+            if (moreTimeCustomer)
+            {
+                moreTimeCustomer = false;
+                timeWait = ogWaitTime;
+            }
         }
         else
         {
