@@ -10,7 +10,7 @@ public class DragAndDropSprite : MonoBehaviour
     public bool isCooked = false; // Đổi thành public
     private bool isInDisk = false; // Kiểm tra Square đã vào Disk chưa
     private bool isGivenToCustomer = false; // Kiểm tra Square đã vào miệng khách hàng chưa
-    public static bool isPutCircle = false;
+    public static bool isPutCircle = false, useRawCookBooster;
     public static int circleIndex, foodIndex;
 
     public GameObject squarePrefab; // Tham chiếu đến prefab của Square
@@ -43,6 +43,12 @@ public class DragAndDropSprite : MonoBehaviour
                     squareChild[i].SetActive(false);
                 }
             }
+        }
+
+        if (useRawCookBooster)
+        {
+            useRawCookBooster = false;
+            CookSquare();
         }
     }
 
@@ -105,7 +111,10 @@ public class DragAndDropSprite : MonoBehaviour
 
             // Đánh dấu đã thả vào Pan và bắt đầu quá trình nấu
             hasBeenDroppedInPan = true;
-            Invoke("CookSquare", 3f); // Sau 3 giây sẽ gọi hàm nấu chín
+            if (!useRawCookBooster)
+            {
+                Invoke("CookSquare", 3f); // Sau 3 giây sẽ gọi hàm nấu chín
+            }
 
             // Sinh ra một bản sao của Square tại vị trí ban đầu của Square
             if (squarePrefab != null)
@@ -128,10 +137,13 @@ public class DragAndDropSprite : MonoBehaviour
 
     private void CookSquare()
     {
-        // Sau khi thả vào Pan 3 giây, Square sẽ bị "nấu" (thay đổi màu hoặc hiệu ứng)
-        Debug.Log("Square is cooked!");
-        GetComponent<SpriteRenderer>().color = Color.yellow; // Thay đổi màu sắc của Square khi nấu
-        isCooked = true; // Đánh dấu Square đã được nấu chín
+        if (!useRawCookBooster)
+        {
+            // Sau khi thả vào Pan 3 giây, Square sẽ bị "nấu" (thay đổi màu hoặc hiệu ứng)
+            Debug.Log("Square is cooked!");
+            GetComponent<SpriteRenderer>().color = Color.yellow; // Thay đổi màu sắc của Square khi nấu
+            isCooked = true; // Đánh dấu Square đã được nấu chín
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)

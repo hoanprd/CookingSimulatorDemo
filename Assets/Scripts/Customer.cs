@@ -44,6 +44,8 @@ public class Customer : MonoBehaviour
         }
         else
         {
+            GameManager.Instance.UpdateHealth(-1);
+            GameManager.Instance.CheckLose();
             Destroy(gameObject);
         }
 
