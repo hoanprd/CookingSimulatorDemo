@@ -73,6 +73,7 @@ public class DragAndDropSprite : MonoBehaviour
                 else if (isGivenToCustomer)
                 {
                     // Nếu đã vào miệng khách hàng, Square sẽ bị hủy
+                    Customer.eatSuccess = 1;
                     Destroy(gameObject); // Hủy Square
                     Debug.Log("Square given to the customer.");
                 }
